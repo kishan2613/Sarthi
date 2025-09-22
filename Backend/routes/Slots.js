@@ -1,41 +1,48 @@
 const express = require("express");
-const router = express.Router();
-const Slot = require("../models/SlotSchema");
 const Booking = require("../models/BookingSchema");
-const {availableSlot} = require("../controllers/slotsController");
 
-router.get("/",availableSlot);
+const router = express.Router();
 
-router.post("/book",async(req,res)=>{
-    try{
-        const {user, slot, bookingDetails} = req.body;
+// @desc    Get all bookings
+// @route   GET /api/bookings
+router.get("/", async (req, res) => {
+  try {
+    const bookings = await Booking.find({});
+    res.status(200).json(bookings);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+});
 
-        const slotExists = await Slot.findById(slot);
-        if(!slotExists){
-            return res.status(404).json({ message: "Slot not found" });
-        }
 
-    const booking = new Booking({
-        user,
-        slot,
-        bookingDetails,
+// POST /form
+router.post("/form", async (req, res) => {
+  try {
+    const { templeName, userName, phone, numberOfPersons, date } = req.body;
+
+    const newBooking = new Booking({
+      templeName,
+      name: userName,
+      phone,
+      persons: numberOfPersons,
+      date, 
     });
 
-    slotExists.booked = Number(slotExists.booked) + Number(bookingDetails.numberOfPeople);
-    await slotExists.save();
-    await booking.save();
-        res.status(201).json({
-      message: "Booking created successfully",
-      booking,
-      updatedSlot: slotExists,
-    });
-    }catch (error) {
-    console.error(" Error creating booking:", error); // log in terminal
-    res.status(500).json({ 
-        message: "Server error", 
-        error: error.message // send actual error message
-    });
-}
-})
+    await newBooking.save();
 
-module.exports = router;    
+    res.status(201).json({
+      message: "Booking Successful ✅",
+      booking: newBooking,
+    });
+  } catch (error) {
+    console.error("Booking Error:", error);
+    res.status(500).json({
+      message: "Booking Failed ❌",
+      error: error.message,
+    });
+  }
+});
+
+
+
+module.exports = router;

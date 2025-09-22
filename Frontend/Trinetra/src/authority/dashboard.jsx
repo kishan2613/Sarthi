@@ -45,6 +45,7 @@ import CameraSearch from './components/Camera';
 import DensityDashboard from './components/DensityDashboard'; 
 import Traffic from './components/Traffic'; 
 import PalmDetectionComponent from './components/PalmDetectionComponent';
+import BookingList from "./components/QueueManagement";
 
 // --- Extracted original dashboard view ---
 const DashboardOverview = () => {
@@ -388,6 +389,7 @@ const menuItems = [
   { id: 'DensityDashboard', text: 'Density Analyser', icon: <AssessmentIcon /> },
   { id: 'feature3Analytics', text: 'Route Control', icon: <TrafficIcon /> },
   { id: 'feature4SOS', text: 'SOS Alerts', icon: <Warning /> },
+  { id: 'booking', text: 'Queue Management', icon: <Warning /> },
 ];
 
 const viewComponents = {
@@ -396,6 +398,7 @@ const viewComponents = {
   DensityDashboard: <DensityDashboard />,
   feature3Analytics: <Traffic />,
   feature4SOS: <PalmDetectionComponent />,
+  booking: <BookingList/>
 };
 
 
@@ -419,8 +422,8 @@ const MahakumbhDashboard = () => {
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       {/* Logo Section */}
       <Box sx={{ p: 3, textAlign: 'center', borderBottom: `1px solid ${theme.palette.grey[200]}` }}>
-        <Typography variant="h5" fontWeight="bold" color="primary.main">
-          Mahakumbh 2025
+        <Typography variant="h3" fontWeight="bold" color="primary.main">
+          Sarthi Admin
         </Typography>
         <Typography variant="body2" color="text.secondary">
           Event Management Portal

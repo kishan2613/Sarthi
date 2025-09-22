@@ -1,156 +1,144 @@
+import { useState } from "react";
 import axios from "axios";
-import { useState, useEffect } from "react";
-import Ticket from "./Ticket";
 
-export default function BookingForm({ preselectedSlot, onBookingSuccess }) {
+export default function BookingForm({ preselectedTemple, onSuccess }) {
   const [formData, setFormData] = useState({
-    fullName: "",
+    templeName: preselectedTemple || "",
+    userName: "",
     phone: "",
-    email: "",
-    aadhaarNumber: "",
-    slotId: preselectedSlot || "",
-    numberOfPeople: 1,
+    
+    numberOfPersons: 1,
+    date: "",
   });
 
-  const [slots, setSlots] = useState([]); 
-  const [loadingSlots, setLoadingSlots] = useState(true);
-  const [ticketData, setTicketData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    const fetchSlots = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/api/slots");
-        setSlots(response.data);
-      } catch (error) {
-        console.error("❌ Error fetching slots:", error.message);
-      } finally {
-        setLoadingSlots(false);
-      }
-    };
-    fetchSlots();
-  }, []);
-
+  // handle input change
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setMessage("");
 
     try {
-      const response = await axios.post("http://localhost:5000/api/slots/book", {
-        user: {
-          fullName: formData.fullName,
-          phone: formData.phone,
-          email: formData.email,
-          aadhaarNumber: formData.aadhaarNumber,
-        },
-        slot: formData.slotId,
-        bookingDetails: {
-          numberOfPeople: formData.numberOfPeople,
-        },
+      const res = await axios.post("http://localhost:5000/api/queue/form", formData);
+      setMessage("✅ Booking Successful!");
+      setFormData({
+        templeName: preselectedTemple || "",
+        userName: "",
+        phone: "",
+        
+        numberOfPersons: 1,
+        date: "",
       });
-
-      console.log("✅ Booking successful:", response.data);
-
-      const bookedSlot = slots.find((s) => s._id === formData.slotId);
-
-      setTicketData({
-        name: formData.fullName,
-        people: formData.numberOfPeople,
-        date: bookedSlot?.date,
-        time: bookedSlot?.time,
-        ghat: bookedSlot?.ghat,
-      });
-
+      if (onSuccess) onSuccess(res.data.booking);
     } catch (error) {
-      console.error("❌ Booking failed:", error.response?.data || error.message);
-      alert("Booking failed: " + (error.response?.data?.message || "Server error"));
+      setMessage("❌ Failed: " + (error.response?.data?.message || "Server error"));
+    } finally {
+      setLoading(false);
     }
   };
 
-  if (ticketData) {
   return (
-    <Ticket 
-      fullName={ticketData.name}
-      numberOfPeople={ticketData.people}
-      date={ticketData.date}
-      slot={`${ticketData.time} – ${ticketData.ghat}`} // combine nicely
-      autoDownload={true}
-    />
-  );
-}
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 bg-white p-6 rounded-xl shadow-lg"
+    >
+      <h2 className="text-2xl font-bold text-center text-orange-600">
+        Book Your Temple Slot
+      </h2>
+
+      {/* Temple Name */}
+      <div>
+        <label className="block font-medium mb-1">Temple Name</label>
+        <input
+          type="text"
+          name="templeName"
+          value={formData.templeName}
+          onChange={handleChange}
+          className="w-full border rounded-lg p-2"
+          placeholder="Enter temple name"
+          required
+        />
+      </div>
+
+      {/* User Name */}
+      <div>
+        <label className="block font-medium mb-1">Your Name</label>
+        <input
+          type="text"
+          name="userName"
+          value={formData.userName}
+          onChange={handleChange}
+          className="w-full border rounded-lg p-2"
+          placeholder="Enter your full name"
+          required
+        />
+      </div>
+
+      {/* Phone */}
+      <div>
+        <label className="block font-medium mb-1">Phone Number</label>
+        <input
+          type="tel"
+          name="phone"
+          value={formData.phone}
+          onChange={handleChange}
+          className="w-full border rounded-lg p-2"
+          placeholder="9876543210"
+          required
+        />
+      </div>
 
 
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4 w-full pt-8  ">
-      <input
-        type="text"
-        name="fullName"
-        placeholder="Full Name"
-        value={formData.fullName}
-        onChange={handleChange}
-        required
-        className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <input
-        type="text"
-        name="phone"
-        placeholder="Phone"
-        value={formData.phone}
-        onChange={handleChange}
-        required
-        className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        value={formData.email}
-        onChange={handleChange}
-        required
-        className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <input
-        type="text"
-        name="aadhaarNumber"
-        placeholder="Aadhaar Number"
-        value={formData.aadhaarNumber}
-        onChange={handleChange}
-        required
-        className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <select
-        name="slotId"
-        value={formData.slotId}
-        onChange={handleChange}
-        required
-        disabled={loadingSlots}
-        className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      {/* Number of Persons */}
+      <div>
+        <label className="block font-medium mb-1">Number of Persons</label>
+        <input
+          type="number"
+          name="numberOfPersons"
+          value={formData.numberOfPersons}
+          onChange={handleChange}
+          min="1"
+          className="w-full border rounded-lg p-2"
+          required
+        />
+      </div>
+
+      {/* Date */}
+      <div>
+        <label className="block font-medium mb-1">Date</label>
+        <input
+          type="date"
+          name="date"
+          value={formData.date}
+          onChange={handleChange}
+          className="w-full border rounded-lg p-2"
+          required
+        />
+      </div>
+
+      
+
+      {/* Submit Button */}
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-full py-2 px-4 rounded-lg bg-gradient-to-r from-orange-500 to-purple-600 text-white font-semibold hover:scale-105 transition"
       >
-        <option value="">-- Select a Slot --</option>
-        {slots.map((slot) => (
-          <option key={slot._id} value={slot._id}>
-            {new Date(slot.date).toLocaleDateString("en-GB")} ({slot.time} – {slot.ghat})
-          </option>
-        ))}
-      </select>
-      <input
-        type="number"
-        name="numberOfPeople"
-        placeholder="Number of People"
-        value={formData.numberOfPeople}
-        onChange={handleChange}
-        required
-        min="1"
-        className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <button 
-        type="submit" 
-        className="w-full bg-gradient-to-r from-orange-500 to-purple-600 hover:scale-105 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-      >
-        Book Slot
+        {loading ? "Booking..." : "Book Now"}
       </button>
+
+      {/* Response Message */}
+      {message && (
+        <p className="text-center font-medium mt-2">{message}</p>
+      )}
     </form>
   );
 }

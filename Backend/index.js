@@ -2,14 +2,14 @@ require("dotenv").config();
 
 const express = require("express");
 const mongoose = require("mongoose");
+const Booking = require("./models/BookingSchema");
 const bodyParser = require("body-parser");
 const cors = require("cors")
-const Slot = require("./models/SlotSchema");
 
 const PORT = process.env.PORT;
 const url = process.env.MONGO_URL;
 
-const SlotsRoutes = require("./routes/Slots");
+const BookRoutes = require("./routes/Slots");
 const Rekroute = require("./routes/recognition")
 
 const app = express();
@@ -21,7 +21,7 @@ app.use(express.json());
 
 
 //Routes
-app.use("/api/slots",SlotsRoutes);
+app.use("/api/queue",BookRoutes);
 app.use("/api/recognition", Rekroute);
 
 
