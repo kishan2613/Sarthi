@@ -130,7 +130,7 @@ const DashboardOverview = () => {
           Welcome back, Administrator
         </Typography>
         <Typography variant="body1" color="text.secondary">
-          Here's what's happening with Mahakumbh 2025 today
+          Here's what's happening with Somnath Temple today
         </Typography>
       </Box>
 

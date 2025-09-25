@@ -7,7 +7,7 @@ const BookingList = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/queue");
+        const res = await fetch("https://sarthi-6n7w.vercel.app/api/queue");
         const data = await res.json();
         setBookings(data);
       } catch (error) {

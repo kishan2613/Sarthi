@@ -137,7 +137,7 @@ function MahakumbhRouteFlowManager() {
   return (
     <div className="mkfm-app-container">
       <header className="mkfm-header">
-        <h1>Mahakumbh Route Flow Manager</h1>
+        <h1>Route Flow Manager</h1>
         <div className="mkfm-header-time">{getCurrentFormattedTime()}</div>
       </header>
 
@@ -371,7 +371,7 @@ function MahakumbhRouteFlowManager() {
       )}
 
       <footer className="mkfm-footer">
-        Powered by RouteFlow | MahaKumbh 2025
+        Powered by Sarthi | SIH2025
       </footer>
 
       {/* Modern styles */}

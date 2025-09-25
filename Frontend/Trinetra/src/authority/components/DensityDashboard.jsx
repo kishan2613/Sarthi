@@ -16,10 +16,10 @@ const Popup = ({ ghat, isVisible, position, onClose }) => {
   };
 
   const ghatDisplayImages = {
-    'Ghat 1': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=200&fit=crop',
-    'Ghat 2': 'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=400&h=200&fit=crop',
-    'Ghat 3': 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?w=400&h=200&fit=crop',
-    'Ghat 4': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=200&fit=crop'
+    'Gate 1': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=200&fit=crop',
+    'Gate 2': 'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=400&h=200&fit=crop',
+    'Gate 3': 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?w=400&h=200&fit=crop',
+    'Gate 4': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=200&fit=crop'
   };
 
   // Fixed API call function
@@ -33,7 +33,7 @@ const Popup = ({ ghat, isVisible, position, onClose }) => {
       // Get the image filename
       const imageFileName = ghatImageFiles[ghatName];
       if (!imageFileName) {
-        throw new Error(`No image file defined for ghat: ${ghatName}`);
+        throw new Error(`No image file defined for gate: ${ghatName}`);
       }
 
       console.log(`📸 Loading image: ${imageFileName}`);
@@ -321,11 +321,9 @@ const densityInfo = getDensityInfo(apiData?.congestion_analysis);
 const Ghats = ({ onGhatClick }) => {
   const [ghatsData, setGhatsData] = useState([
     // Left side ghats
-    { id: 1, name: "Ghat 1", population: 45000, side: "left", position: { top: "60%", right: "50%" } },
-    { id: 2, name: "Ghat 2", population: 85000, side: "left", position: { top: "74%", left: "14%" } },
+    { id: 1, name: "Gate 1", population: 45000, side: "left", position: { top: "60%", right: "80%" } },
     // Right side ghats
-    { id: 3, name: "Ghat 3", population: 35000, side: "right", position: { top: "74%", right: "6%" } },
-    { id: 4, name: "Ghat 4", population: 95000, side: "right", position: { top: "60%", right: "12%" } }
+    { id: 2, name: "Gate 2", population: 95000, side: "right", position: { top: "60%", right: "12%" } }
   ]);
 
   const getDensityColor = (population) => {
@@ -422,14 +420,14 @@ const KumbhMelaMonitor = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.5 }}
     >
-      🕉️ Sacred Kumbh Mela
+      Temple Monitoring
       <motion.div 
         className="text-2xl font-normal text-white-600 mt-2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.7 }}
       >
-        Real-time Ghat Monitoring
+        Real-time Gate Monitoring
       </motion.div>
     </motion.h1>
     {/* User Statistics Section */}
@@ -447,7 +445,7 @@ const KumbhMelaMonitor = () => {
           <h3 className="text-4xl font-extrabold text-white">
             {Math.floor(Math.random() * (750 - 650 + 1)) + 650}
           </h3>
-          <p className="text-sm font-semibold  text-white mt-2">Users seen on Ghats Today</p>
+          <p className="text-sm font-semibold  text-white mt-2">Users seen on Temple Today</p>
         </div>
       </motion.div>
       <motion.div 
@@ -467,7 +465,7 @@ const KumbhMelaMonitor = () => {
             animate={{ opacity: 1, scale: 1, rotateY: 0 }}
             transition={{ duration: 1, delay: 0.4 }}
             style={{
-              backgroundImage: 'url("/Ghat.png.png")', // Path relative to public/
+              backgroundImage: 'url("/Temple.png")', // Path relative to public/
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
