@@ -15,6 +15,7 @@ import Dashboard from "./authority/dashboard";
 import Guide from "./Pages/Guide";
  
 import Ticket from "./Pages/Ticket";
+import TempleAnalytics from "./Pages/TempleAnalystics";
  
 
 
@@ -40,6 +41,8 @@ function AppWrapper() {
           <Route path="/lost-found" element={<LostAndFoundPage />} />
           <Route path="/ar-navigation" element={<SafeZonePage />} />
           <Route path="/ticket" element={<Ticket />} />
+           <Route path="/xyz" element={<TempleAnalytics/>} />
+
         </Routes>
       </main>
       {!hideFooterPaths.includes(location.pathname) && <Footer id="footer"/>}

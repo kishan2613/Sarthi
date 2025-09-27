@@ -9,10 +9,10 @@ const Popup = ({ ghat, isVisible, position, onClose }) => {
 
   // Fixed image paths - Remove leading slash if using public folder
   const ghatImageFiles = {
-    "Ghat 1": "testing1.png",
-    "Ghat 2": "testing2.jpg", 
-    "Ghat 3": "testing3.jpg",
-    "Ghat 4": "testing6.jpg",
+    "Gate 1": "testing1.png",
+    "Gate 2": "testing6.jpg", 
+    "Gate 3": "testing3.jpg",
+    "Gate 4": "testing6.jpg",
   };
 
   const ghatDisplayImages = {
